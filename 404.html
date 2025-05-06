@@ -1,101 +1,129 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>404 Not Found | First Step Webdesign</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+  <title>404 | Page Not Found</title>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;700&display=swap" rel="stylesheet">
   <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
     body {
       font-family: 'Outfit', sans-serif;
-      background: linear-gradient(135deg, #fce4ec, #e1f5fe);
+      background: radial-gradient(circle at top right, #fce4ec, #e1f5fe);
+      color: #333;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
       overflow: hidden;
+      text-align: center;
+      padding: 2rem;
     }
 
-    .floating {
-      animation: float 3s ease-in-out infinite;
+    h1 {
+      font-size: 8rem;
+      color: #ec4899;
+      animation: pop 1.2s ease-out;
     }
 
-    @keyframes float {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-10px); }
+    p {
+      font-size: 1.5rem;
+      margin: 1rem 0;
+      color: #555;
+      animation: fadeIn 1.5s ease;
     }
 
+    a {
+      display: inline-block;
+      margin-top: 1.5rem;
+      padding: 0.75rem 1.5rem;
+      background: #ec4899;
+      color: white;
+      text-decoration: none;
+      border-radius: 999px;
+      font-weight: bold;
+      transition: background 0.3s;
+    }
+
+    a:hover {
+      background: #db2777;
+    }
+
+    @keyframes pop {
+      0% { transform: scale(0.8); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Game canvas */
     canvas {
       position: absolute;
-      top: 0;
-      left: 0;
-      z-index: -1;
+      bottom: 1rem;
+      right: 1rem;
+      border: 2px solid #ec4899;
+      border-radius: 10px;
+      background: white;
+    }
+
+    .game-hint {
+      position: absolute;
+      bottom: 1rem;
+      left: 1rem;
+      font-size: 0.9rem;
+      color: #888;
     }
   </style>
 </head>
-<body class="flex flex-col items-center justify-center min-h-screen text-center px-6 text-gray-800">
+<body>
+  <h1>404</h1>
+  <p>Oops! This page took the wrong step...</p>
+  <a href="index.html">Back to Homepage</a>
 
-  <div class="floating">
-    <h1 class="text-7xl font-extrabold text-pink-500 mb-2">404</h1>
-    <p class="text-2xl font-semibold">Page Not Found</p>
-    <p class="text-gray-600 mb-6">But hey, have some fun while you're here.</p>
-  </div>
-
-  <a href="index.html" class="mt-4 px-6 py-3 bg-pink-500 text-white rounded-full shadow hover:bg-pink-600 transition">
-    Back to Homepage
-  </a>
-
-  <p class="text-sm text-gray-500 mt-6">Psst... click anywhere to bounce the logo 💥</p>
-
-  <canvas id="gameCanvas" width="1000" height="600"></canvas>
+  <div class="game-hint">🕹️ Secret: Try clicking the bouncing emoji 👇</div>
+  <canvas id="gameCanvas" width="200" height="100"></canvas>
 
   <script>
-    const canvas = document.getElementById('gameCanvas');
-    const ctx = canvas.getContext('2d');
+    const canvas = document.getElementById("gameCanvas");
+    const ctx = canvas.getContext("2d");
 
-    let logo = {
-      x: 200,
-      y: 150,
-      dx: 3,
-      dy: 3,
-      radius: 30
-    };
+    let x = 50, y = 50;
+    let vx = 2, vy = 2;
+    let radius = 15;
+    let score = 0;
+    let emoji = "💥";
 
-    function drawLogo() {
+    function drawBall() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.font = "24px Arial";
+      ctx.fillText(emoji, x - radius, y + radius / 2);
+      x += vx;
+      y += vy;
 
-      // Circle for logo
-      ctx.beginPath();
-      ctx.arc(logo.x, logo.y, logo.radius, 0, Math.PI * 2);
-      ctx.fillStyle = "#ec4899"; // Tailwind pink-500
-      ctx.fill();
-
-      // Text in circle
-      ctx.fillStyle = "white";
-      ctx.font = "bold 18px Outfit";
-      ctx.textAlign = "center";
-      ctx.fillText("FS", logo.x, logo.y + 6);
-
-      // Move
-      logo.x += logo.dx;
-      logo.y += logo.dy;
-
-      // Bounce
-      if (logo.x + logo.radius > canvas.width || logo.x - logo.radius < 0) {
-        logo.dx *= -1;
-      }
-      if (logo.y + logo.radius > canvas.height || logo.y - logo.radius < 0) {
-        logo.dy *= -1;
-      }
-
-      requestAnimationFrame(drawLogo);
+      if (x + radius > canvas.width || x - radius < 0) vx = -vx;
+      if (y + radius > canvas.height || y - radius < 0) vy = -vy;
     }
 
-    canvas.addEventListener("click", () => {
-      // Give it a new random speed on click
-      logo.dx = (Math.random() * 4 + 2) * (Math.random() < 0.5 ? -1 : 1);
-      logo.dy = (Math.random() * 4 + 2) * (Math.random() < 0.5 ? -1 : 1);
+    canvas.addEventListener("click", (e) => {
+      const rect = canvas.getBoundingClientRect();
+      const clickX = e.clientX - rect.left;
+      const clickY = e.clientY - rect.top;
+
+      const dist = Math.hypot(clickX - x, clickY - y);
+      if (dist < radius * 2) {
+        score++;
+        emoji = ["💥", "✨", "🔥", "🎯", "🎉"][score % 5];
+        vx *= 1.1;
+        vy *= 1.1;
+      }
     });
 
-    drawLogo();
+    setInterval(drawBall, 20);
   </script>
-
 </body>
 </html>
