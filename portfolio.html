@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Portfolio | First Step Webdesign</title>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      font-family: 'Outfit', sans-serif;
+      background: linear-gradient(to bottom right, #e1f5fe, #fce4ec);
+    }
+
+    .fade-in {
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeIn 1s ease forwards;
+    }
+
+    @keyframes fadeIn {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .portfolio-card {
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .portfolio-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 20px rgba(0,0,0,0.1);
+    }
+  </style>
+</head>
+<body class="text-gray-800">
+
+  <header class="p-6 flex justify-between items-center">
+    <h1 class="text-3xl font-bold text-pink-500">First Step Webdesign</h1>
+    <nav class="space-x-6 hidden sm:block">
+      <a href="index.html" class="hover:text-pink-600">Home</a>
+      <a href="#" class="hover:text-pink-600">Services</a>
+      <a href="portfolio.html" class="text-pink-600 font-semibold">Portfolio</a>
+      <a href="contact.html" class="hover:text-pink-600">Contact</a>
+    </nav>
+  </header>
+
+  <section class="max-w-6xl mx-auto mt-16 px-6 fade-in">
+    <h2 class="text-4xl font-bold text-center text-purple-700 mb-4">Our Work Speaks for Itself</h2>
+    <p class="text-center text-gray-600 mb-12">Here are a few of our proudest web design projects, created with love and a whole lot of code.</p>
+
+    <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+      <!-- Portfolio Item 1 -->
+      <div class="bg-white rounded-3xl shadow-md overflow-hidden portfolio-card">
+        <img src="https://via.placeholder.com/600x400?text=Website+1" alt="Website 1" class="w-full">
+        <div class="p-5">
+          <h3 class="text-xl font-semibold text-pink-500">Local Bakery Website</h3>
+          <p class="text-gray-600 mt-2">A sweet and simple site for a family-owned bakery with online ordering features.</p>
+        </div>
+      </div>
+
+      <!-- Portfolio Item 2 -->
+      <div class="bg-white rounded-3xl shadow-md overflow-hidden portfolio-card">
+        <img src="https://via.placeholder.com/600x400?text=Website+2" alt="Website 2" class="w-full">
+        <div class="p-5">
+          <h3 class="text-xl font-semibold text-pink-500">Tech Startup Landing Page</h3>
+          <p class="text-gray-600 mt-2">Clean, responsive landing page for a software startup with call-to-action buttons.</p>
+        </div>
+      </div>
+
+      <!-- Portfolio Item 3 -->
+      <div class="bg-white rounded-3xl shadow-md overflow-hidden portfolio-card">
+        <img src="https://via.placeholder.com/600x400?text=Website+3" alt="Website 3" class="w-full">
+        <div class="p-5">
+          <h3 class="text-xl font-semibold text-pink-500">Photography Portfolio</h3>
+          <p class="text-gray-600 mt-2">Minimalist gallery site for a freelance photographer with light/dark mode toggle.</p>
+        </div>
+      </div>
+
+      <!-- Add more portfolio cards below as needed -->
+    </div>
+  </section>
+
+  <footer class="mt-16 p-8 text-center text-gray-600 bg-gray-100">
+    <p>&copy; 2025 First Step Webdesign. Made with passion.</p>
+  </footer>
+
+</body>
+</html>
