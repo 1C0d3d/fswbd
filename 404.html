@@ -3,29 +3,99 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Page Not Found | First Step Webdesign</title>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;700&display=swap" rel="stylesheet">
+  <title>404 Not Found | First Step Webdesign</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;700&display=swap" rel="stylesheet">
   <style>
     body {
       font-family: 'Outfit', sans-serif;
-      background: linear-gradient(to bottom right, #fce4ec, #e3f2fd);
+      background: linear-gradient(135deg, #fce4ec, #e1f5fe);
+      overflow: hidden;
+    }
+
+    .floating {
+      animation: float 3s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: -1;
     }
   </style>
 </head>
-<body class="flex flex-col items-center justify-center min-h-screen text-center text-gray-800 px-4">
+<body class="flex flex-col items-center justify-center min-h-screen text-center px-6 text-gray-800">
 
-  <h1 class="text-6xl font-bold text-pink-500 mb-4">404</h1>
-  <p class="text-2xl font-semibold mb-2">Oops! That page doesn't exist.</p>
-  <p class="text-gray-600 mb-6">Let’s get you back to safety.</p>
+  <div class="floating">
+    <h1 class="text-7xl font-extrabold text-pink-500 mb-2">404</h1>
+    <p class="text-2xl font-semibold">Page Not Found</p>
+    <p class="text-gray-600 mb-6">But hey, have some fun while you're here.</p>
+  </div>
 
-  <a href="index.html" class="px-6 py-3 bg-pink-500 text-white rounded-full shadow hover:bg-pink-600 transition">
+  <a href="index.html" class="mt-4 px-6 py-3 bg-pink-500 text-white rounded-full shadow hover:bg-pink-600 transition">
     Back to Homepage
   </a>
 
-  <footer class="mt-12 text-gray-400 text-sm">
-    &copy; 2025 First Step Webdesign
-  </footer>
+  <p class="text-sm text-gray-500 mt-6">Psst... click anywhere to bounce the logo 💥</p>
+
+  <canvas id="gameCanvas" width="1000" height="600"></canvas>
+
+  <script>
+    const canvas = document.getElementById('gameCanvas');
+    const ctx = canvas.getContext('2d');
+
+    let logo = {
+      x: 200,
+      y: 150,
+      dx: 3,
+      dy: 3,
+      radius: 30
+    };
+
+    function drawLogo() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // Circle for logo
+      ctx.beginPath();
+      ctx.arc(logo.x, logo.y, logo.radius, 0, Math.PI * 2);
+      ctx.fillStyle = "#ec4899"; // Tailwind pink-500
+      ctx.fill();
+
+      // Text in circle
+      ctx.fillStyle = "white";
+      ctx.font = "bold 18px Outfit";
+      ctx.textAlign = "center";
+      ctx.fillText("FS", logo.x, logo.y + 6);
+
+      // Move
+      logo.x += logo.dx;
+      logo.y += logo.dy;
+
+      // Bounce
+      if (logo.x + logo.radius > canvas.width || logo.x - logo.radius < 0) {
+        logo.dx *= -1;
+      }
+      if (logo.y + logo.radius > canvas.height || logo.y - logo.radius < 0) {
+        logo.dy *= -1;
+      }
+
+      requestAnimationFrame(drawLogo);
+    }
+
+    canvas.addEventListener("click", () => {
+      // Give it a new random speed on click
+      logo.dx = (Math.random() * 4 + 2) * (Math.random() < 0.5 ? -1 : 1);
+      logo.dy = (Math.random() * 4 + 2) * (Math.random() < 0.5 ? -1 : 1);
+    });
+
+    drawLogo();
+  </script>
 
 </body>
 </html>
